@@ -66,4 +66,19 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser };
+const getUserProfile = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    res.status(200).json({
+      user: req.user,
+    });
+  } catch (error) {
+    console.error("PROFILE ERROR:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export { registerUser, loginUser, getUserProfile };
