@@ -124,4 +124,39 @@ const updateProfile = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getUserProfile, updateProfile };
+const uploadKYC = async (req, res) => {
+  try {
+    // 1. Check if file exists in the request
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ error: "Please upload a document (Aadhaar/PAN)" });
+    }
+
+    // 2. Find user and update document path
+    // We set kycVerified to false to require admin re-approval on new uploads
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        kycDocument: req.file.path,
+        kycVerified: false,
+      },
+      { new: true, runValidators: true },
+    ).select("-passwordHash");
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      message:
+        "KYC document uploaded successfully. Awaiting admin verification.",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("KYC UPLOAD ERROR:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export { registerUser, loginUser, getUserProfile, updateProfile, uploadKYC };

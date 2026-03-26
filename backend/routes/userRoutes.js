@@ -3,10 +3,11 @@ import {
   loginUser,
   getUserProfile,
   updateProfile,
+  uploadKYC,
 } from "../controllers/userContoller.js";
 
 import { protect } from "../middleware/authMiddleware.js";
-
+import { upload } from "../middleware/uploadMiddleware.js";
 import { Router } from "express";
 
 const router = Router();
@@ -18,5 +19,7 @@ router
   .route("/profile")
   .get(protect, getUserProfile)
   .patch(protect, updateProfile);
+
+router.post("/upload-kyc", protect, upload.single("kycProof"), uploadKYC);
 
 export default router;
