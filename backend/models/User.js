@@ -34,6 +34,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    kycDocument: {
+      type: String,
+      default: null,
+    },
     address: {
       street: { type: String, required: true },
       city: { type: String, required: true },

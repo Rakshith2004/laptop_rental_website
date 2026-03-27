@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import laptopRoutes from "./routes/laptopRoutes.js";
+import rentalRoutes from "./routes/rentalRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 dotenv.config();
@@ -36,6 +38,8 @@ app.get("/signup", (req, res) => {
 //------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 app.use("/api/users", userRoutes);
+app.use("/api/laptops", laptopRoutes);
+app.use("/api/rentals", rentalRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
