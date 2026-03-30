@@ -1,0 +1,80 @@
+.laptop-container {
+  width: 90%;
+  margin: auto;
+  padding: 40px 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+/* Card */
+
+.laptop-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.laptop-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Image */
+
+.laptop-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Content */
+
+.laptop-card h3 {
+  font-size: 18px;
+  margin: 12px 15px 5px;
+  color: #111;
+}
+
+.laptop-card p {
+  margin: 3px 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Price */
+
+.laptop-card h4 {
+  margin: 10px 15px;
+  color: #2563eb;
+  font-size: 17px;
+}
+
+/* Button */
+
+.rent-btn {
+  width: calc(100% - 30px);
+  margin: 10px 15px 15px;
+  padding: 10px;
+
+  background: #2563eb;
+  border: none;
+  border-radius: 6px;
+
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.rent-btn:hover {
+  background: #1e40af;
+}

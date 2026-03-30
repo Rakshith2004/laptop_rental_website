@@ -6,17 +6,24 @@ import laptopRoutes from "./routes/laptopRoutes.js";
 import rentalRoutes from "./routes/rentalRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 dotenv.config();
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 const PORT = process.env.PORT || 8000;
 
 connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 
 // --- Fix for __dirname in ES Modules ------------------------------------------
 const __filename = fileURLToPath(import.meta.url);
