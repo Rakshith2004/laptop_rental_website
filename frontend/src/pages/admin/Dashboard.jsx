@@ -20,3 +20,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+// This is a simple dashboard page for the admin panel. It uses the AdminLayout component to provide a consistent layout and the StatCard component to display key statistics.
