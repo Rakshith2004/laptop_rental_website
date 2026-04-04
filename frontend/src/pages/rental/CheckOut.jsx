@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./CheckOut.css";
-import API from "../api/axios";
+import API from "../../api/axios";
 
 const Checkout = () => {
   const baseURL = "http://localhost:8000/";

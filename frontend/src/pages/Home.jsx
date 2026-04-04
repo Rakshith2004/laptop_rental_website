@@ -1,6 +1,6 @@
 import React from "react";
-import LaptopCard from "../components/LaptopCard";
-import HeroBanner from "../components/HeroBanner";
+import LaptopCard from "../components/home/LaptopCard";
+import HeroBanner from "../components/home/HeroBanner";
 
 const Home = () => {
   return (

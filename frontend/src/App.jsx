@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import UploadKYC from "./pages/UploadKYC";
-import AdminDashboard from "./pages/AdminDashboard";
-import Checkout from "./pages/CheckOut";
-import RentalSuccess from "./pages/RentalSuccess";
-import MyBooking from "./pages/MyBooking";
+import Signup from "./pages/auth/Signup";
+import Login from "./pages/auth/Login";
+import Profile from "./pages/user/Profile";
+import UploadKYC from "./pages/user/UploadKYC";
+import Dashboard from "./pages/admin/Dashboard";
+import Checkout from "./pages/rental/CheckOut";
+import RentalSuccess from "./pages/rental/RentalSuccess";
+import MyBooking from "./pages/user/MyBooking";
 import { useState } from "react";
 
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
       <Navbar user={user} setUser={setUser} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<Dashboard />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/checkout" element={<Checkout />} />

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../api/axios";
+import API from "../../api/axios";
 import "./UploadKYC.css";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
