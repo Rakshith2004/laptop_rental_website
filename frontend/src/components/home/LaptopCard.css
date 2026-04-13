@@ -1,80 +1,146 @@
-.laptop-container {
-  width: 90%;
-  margin: auto;
-  padding: 40px 0;
-
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 25px;
+/* ================= CONTAINER ================= */
+.row-container {
+  position: relative;
 }
 
-/* Card */
+/* ================= SCROLL ROW ================= */
+.row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 50px;
+  scroll-behavior: smooth;
+}
 
-.laptop-card {
-  background: white;
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+/* ================= NAV BUTTONS ================= */
+.nav-btn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 5;
+  transition: 0.2s ease;
+}
+
+.nav-btn.left {
+  left: 8px;
+}
+
+.nav-btn.right {
+  right: 8px;
+}
+
+.nav-btn:hover {
+  background: #22c55e;
+}
+
+/* ================= CARD ================= */
+.card {
+  min-width: 250px;
+  max-width: 250px;
+  background: #0f172a;
   border-radius: 12px;
   overflow: hidden;
-
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-
-  transition: all 0.25s ease;
-  cursor: pointer;
+  transition: 0.25s ease;
 }
 
-.laptop-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Image */
-
-.laptop-card img {
+/* ================= IMAGE ================= */
+.card-img {
   width: 100%;
-  height: 180px;
+  height: 150px;
   object-fit: cover;
 }
 
-/* Content */
-
-.laptop-card h3 {
-  font-size: 18px;
-  margin: 12px 15px 5px;
-  color: #111;
+/* ================= BODY ================= */
+.card-body {
+  padding: 14px;
+  color: white;
 }
 
-.laptop-card p {
-  margin: 3px 15px;
-  font-size: 14px;
-  color: #555;
+/* TITLE */
+.card-body h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 
-/* Price */
-
-.laptop-card h4 {
-  margin: 10px 15px;
-  color: #2563eb;
-  font-size: 17px;
+/* BRAND */
+.muted {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 10px;
 }
 
-/* Button */
+/* ================= TAGS ================= */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
 
-.rent-btn {
-  width: calc(100% - 30px);
-  margin: 10px 15px 15px;
-  padding: 10px;
-
-  background: #2563eb;
-  border: none;
+.tags span {
+  font-size: 11px;
+  background: #1e293b;
+  padding: 4px 7px;
   border-radius: 6px;
+  color: #cbd5f5;
+}
+
+/* ===== BOTTOM SECTION ===== */
+.card-bottom {
+  display: flex;
+  gap: 10px;
+}
+
+/* ===== PRICE BOX ===== */
+.price {
+  flex: 1; /* 🔥 equal width */
+  background: #1e293b;
+  color: #22c55e;
+  min-width: 0.5px;
+  height: 0.1px; /* 🔥 same height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ===== BUTTON ===== */
+.card-bottom button {
+  flex: 1; /* 🔥 equal width */
+
+  height: 41px; /* 🔥 same height */
+  background: #22c55e;
+  border: none;
+  border-radius: 8px;
 
   color: white;
+  font-size: 13px;
   font-weight: 500;
-  font-size: 14px;
-
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
-.rent-btn:hover {
-  background: #1e40af;
+.card-bottom button:hover {
+  background: #16a34a;
 }

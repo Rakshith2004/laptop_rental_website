@@ -1,48 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../api/axios.js";
 import "./LaptopCard.css";
-const LaptopCard = () => {
+
+const LaptopCard = ({ laptops = [] }) => {
   const navigate = useNavigate();
-  const [laptops, setLaptops] = useState([]);
-
+  const scrollRef = useRef(null);
   const baseURL = "http://localhost:8000/";
-  useEffect(() => {
-    const fetchLaptop = async () => {
-      try {
-        const response = await API.get("/laptops");
-        setLaptops(response.data);
-        console.log("Fetched laptops:", response.data);
-      } catch (error) {
-        console.error("Error fetching laptop data:", error);
-      }
-    };
-    fetchLaptop();
-  }, []);
 
-  const handleRentNow = (laptop) => {
+  const scroll = (dir) => {
+    if (!scrollRef.current) return;
+    const amount = dir === "left" ? -300 : 300;
+    scrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
+  };
+
+  const goToCheckout = (laptop) => {
     navigate("/checkout", { state: { laptop } });
   };
 
   return (
-    <div className="laptop-container">
-      {laptops.map((laptop) => (
-        <div className="laptop-card" key={laptop._id}>
-          <img src={`${baseURL}${laptop.images?.[0]}`} alt={laptop.model} />
+    <div className="row-container">
+      {/* LEFT */}
+      <button className="nav-btn left" onClick={() => scroll("left")}>
+        ‹
+      </button>
 
-          <h3>{laptop.model}</h3>
+      {/* ROW */}
+      <div className="row" ref={scrollRef}>
+        {laptops.map((lap) => (
+          <div className="card" key={lap._id}>
+            <img
+              src={`${baseURL}${lap.images?.[0]}`}
+              alt={lap.model}
+              className="card-img"
+            />
 
-          <p>Brand: {laptop.brand}</p>
-          <p>Processor: {laptop.specs?.processor}</p>
-          <p>RAM: {laptop.specs?.ram}</p>
+            <div className="card-body">
+              <h3>{lap.model}</h3>
+              <p className="muted">{lap.brand}</p>
 
-          <h4>₹{laptop.pricing?.perDay} / day</h4>
+              <div className="tags">
+                <span>{lap.specs?.processor}</span>
+                <span>{lap.specs?.ram}</span>
+                <span>{lap.specs?.storage}</span>
+              </div>
 
-          <button className="rent-btn" onClick={() => handleRentNow(laptop)}>
-            Rent Now
-          </button>
-        </div>
-      ))}
+              <div className="card-bottom">
+                <span className="price">₹{lap.pricing?.perDay}</span>
+                <button onClick={() => goToCheckout(lap)}>
+                  Rent
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* RIGHT */}
+      <button className="nav-btn right" onClick={() => scroll("right")}>
+        ›
+      </button>
     </div>
   );
 };
