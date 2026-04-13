@@ -10,6 +10,7 @@ const laptopSchema = new Schema(
       processor: { type: String, required: true },
       display: { type: String },
       os: { type: String },
+      gpu: { type: String },
     },
     category: {
       type: String,

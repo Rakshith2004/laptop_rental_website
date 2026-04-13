@@ -9,6 +9,8 @@ const getAllLaptops = async (req, res) => {
     if (brand) query.brand = new RegExp(brand, "i");
     if (condition) query.condition = condition;
     if (tag) query.tags = { $in: [tag] };
+    const { gpu } = req.query;
+    if (gpu) query["specs.gpu"] = new RegExp(gpu, "i");
 
     // Price filtering (based on daily rate)
     if (minPrice || maxPrice) {

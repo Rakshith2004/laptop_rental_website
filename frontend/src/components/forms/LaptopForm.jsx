@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import API from "../../api/axios";
 import "./LaptopForm.css";
 
@@ -10,12 +9,18 @@ const LaptopForm = () => {
     ram: "",
     storage: "",
     processor: "",
+    gpu: "",
     display: "",
     os: "",
     securityDeposit: "",
     totalUnits: "",
+    availableUnits: "",
     category: "Office",
+    condition: "good",
+    status: "available",
+    tags: "",
   });
+
   const [pricing, setPricing] = useState({
     perDay: "",
     perWeek: "",
@@ -24,124 +29,123 @@ const LaptopForm = () => {
 
   const [imageFile, setImageFile] = useState(null);
 
-  // Handle standard inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle nested pricing inputs
   const handlePricingChange = (e) => {
     const { name, value } = e.target;
     setPricing((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    setImageFile(e.target.files[0]);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const data = new FormData();
 
-    // 1. Append general top-level fields
     data.append("model", formData.model);
     data.append("brand", formData.brand);
     data.append("category", formData.category);
-    data.append("os", formData.os);
-    data.append("display", formData.display);
+    data.append("condition", formData.condition);
+    data.append("status", formData.status);
     data.append("securityDeposit", formData.securityDeposit);
     data.append("totalUnits", formData.totalUnits);
-    data.append("tags", formData.tags);
+    data.append(
+      "availableUnits",
+      formData.availableUnits || formData.totalUnits,
+    );
 
-    // 2. Group and Stringify the SPECS object (Fixes your 400 error)
+    const tagsArray = formData.tags.split(",").map((tag) => tag.trim());
+    data.append("tags", JSON.stringify(tagsArray));
+
     const specs = {
       ram: formData.ram,
       storage: formData.storage,
       processor: formData.processor,
+      gpu: formData.gpu,
+      display: formData.display,
+      os: formData.os,
     };
-    data.append("specs", JSON.stringify(specs));
 
-    // 3. Stringify the PRICING object
+    data.append("specs", JSON.stringify(specs));
     data.append("pricing", JSON.stringify(pricing));
 
-    // 4. Append the image
-    if (imageFile) {
-      data.append("image", imageFile);
-    }
+    if (imageFile) data.append("image", imageFile);
+
     try {
-      const response = await API.post("/laptops", data, {
+      await API.post("/laptops", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Laptop added successfully!");
-      console.log(response.data);
+      alert("✅ Laptop added successfully!");
     } catch (err) {
-      console.error("Submission error:", err.response?.data || err.message);
+      console.error(err);
+      alert("❌ Error");
     }
   };
 
   return (
     <div className="laptop-form-container">
       <h2>Add New Laptop</h2>
+
       <form onSubmit={handleSubmit}>
-        <div className="section-title">Specifications</div>
+        {/* BASIC */}
+        <div className="section-title">Basic Info</div>
         <div className="grid-2">
           <div className="field-group">
-            <label>Model Name</label>
-            <input
-              name="model"
-              placeholder="e.g. MacBook Pro"
-              value={formData.model}
-              onChange={handleChange}
-            />
+            <label>Model</label>
+            <input name="model" onChange={handleChange} />
           </div>
+
           <div className="field-group">
             <label>Brand</label>
-            <input
-              name="brand"
-              placeholder="e.g. Apple"
-              value={formData.brand}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="field-group">
-            <label>RAM</label>
-            <input
-              name="ram"
-              placeholder="16GB"
-              value={formData.ram}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="field-group">
-            <label>Processor</label>
-            <input
-              name="processor"
-              placeholder="e.g. Intel i7 / M3"
-              value={formData.processor}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="field-group">
-            <label>Storage</label>
-            <input
-              name="storage"
-              placeholder="512GB SSD"
-              value={formData.storage}
-              onChange={handleChange}
-            />
+            <input name="brand" onChange={handleChange} />
           </div>
         </div>
-        {/* New Classification Section */}
-        <div className="section-title">Classification & Tags</div>
+
+        {/* SPECS */}
+        <div className="section-title">Specifications</div>
+        <div className="grid-3">
+          <div className="field-group">
+            <label>RAM</label>
+            <input name="ram" onChange={handleChange} />
+          </div>
+
+          <div className="field-group">
+            <label>Storage</label>
+            <input name="storage" onChange={handleChange} />
+          </div>
+
+          <div className="field-group">
+            <label>Processor</label>
+            <input name="processor" onChange={handleChange} />
+          </div>
+
+          <div className="field-group">
+            <label>GPU</label>
+            <input name="gpu" onChange={handleChange} />
+          </div>
+
+          <div className="field-group">
+            <label>Display</label>
+            <input name="display" onChange={handleChange} />
+          </div>
+
+          <div className="field-group">
+            <label>OS</label>
+            <input name="os" onChange={handleChange} />
+          </div>
+        </div>
+
+        {/* CATEGORY */}
+        <div className="section-title">Category</div>
         <div className="grid-2">
           <div className="field-group">
-            <label>Primary Category</label>
+            <label>Category</label>
             <select
               name="category"
-              value={formData.category}
-              onChange={handleChange}
               className="form-select"
+              onChange={handleChange}
             >
               <option value="Office">Office</option>
               <option value="Gaming">Gaming</option>
@@ -149,80 +153,109 @@ const LaptopForm = () => {
               <option value="Workstation">Workstation</option>
             </select>
           </div>
+
           <div className="field-group">
-            <label>Custom Tags (comma separated)</label>
+            <label>Tags</label>
             <input
               name="tags"
-              placeholder="e.g. RGB, RTX 4060, Lightweight"
-              value={formData.tags}
+              placeholder="gaming, rtx, lightweight"
               onChange={handleChange}
             />
           </div>
         </div>
-        <div className="section-title">Inventory & Security</div>
+
+        {/* CONDITION */}
+        <div className="section-title">Condition & Status</div>
         <div className="grid-2">
           <div className="field-group">
-            <label>Security Deposit (₹)</label>
-            <input
-              name="securityDeposit"
-              type="number"
-              value={formData.securityDeposit}
+            <label>Condition</label>
+            <select
+              name="condition"
+              className="form-select"
               onChange={handleChange}
-            />
+            >
+              <option value="new">New</option>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+            </select>
           </div>
+
+          <div className="field-group">
+            <label>Status</label>
+            <select
+              name="status"
+              className="form-select"
+              onChange={handleChange}
+            >
+              <option value="available">Available</option>
+              <option value="rented">Rented</option>
+              <option value="maintenance">Maintenance</option>
+            </select>
+          </div>
+        </div>
+
+        {/* INVENTORY */}
+        <div className="section-title">Inventory</div>
+        <div className="grid-2">
           <div className="field-group">
             <label>Total Units</label>
+            <input type="number" name="totalUnits" onChange={handleChange} />
+          </div>
+
+          <div className="field-group">
+            <label>Available Units</label>
             <input
-              name="totalUnits"
               type="number"
-              value={formData.totalUnits}
+              name="availableUnits"
               onChange={handleChange}
             />
           </div>
         </div>
 
-        <div className="section-title">Pricing Details</div>
+        {/* PRICING */}
+        <div className="section-title">Pricing</div>
         <div className="grid-3">
           <div className="field-group">
-            <label>Daily Rate</label>
-            <input
-              name="perDay"
-              type="number"
-              placeholder="Daily"
-              value={pricing.perDay}
-              onChange={handlePricingChange}
-            />
+            <label>Per Day</label>
+            <input type="number" name="perDay" onChange={handlePricingChange} />
           </div>
+
           <div className="field-group">
-            <label>Weekly Rate</label>
+            <label>Per Week</label>
             <input
+              type="number"
               name="perWeek"
-              type="number"
-              placeholder="Weekly"
-              value={pricing.perWeek}
               onChange={handlePricingChange}
             />
           </div>
+
           <div className="field-group">
-            <label>Monthly Rate</label>
+            <label>Per Month</label>
             <input
-              name="perMonth"
               type="number"
-              placeholder="Monthly"
-              value={pricing.perMonth}
+              name="perMonth"
               onChange={handlePricingChange}
             />
           </div>
         </div>
 
-        <div className="section-title">Product Image</div>
-        <div className="image-upload-box">
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+        {/* SECURITY */}
+        <div className="section-title">Security Deposit</div>
+        <div className="field-group">
+          <label>Deposit (₹)</label>
+          <input type="number" name="securityDeposit" onChange={handleChange} />
         </div>
 
-        <button type="submit" className="publish-btn">
-          Publish Laptop
-        </button>
+        {/* IMAGE */}
+        <div className="section-title">Image</div>
+        <div className="image-upload-box">
+          <input
+            type="file"
+            onChange={(e) => setImageFile(e.target.files[0])}
+          />
+        </div>
+
+        <button className="publish-btn">🚀 Publish Laptop</button>
       </form>
     </div>
   );
