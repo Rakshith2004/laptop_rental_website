@@ -12,6 +12,7 @@ import MyBooking from "./pages/user/MyBooking";
 import ForgotPassword from "./components/forms/ForgotPassword";
 import ResetPassword from "./components/forms/ResetPassword";
 import LaptopDetails from "./pages/rental/LaptopDetails";
+import LaptopPage from "./pages/rental/LaptopPage";
 import { useState } from "react";
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/laptops/details/:id" element={<LaptopDetails />} />
         <Route path="/rental-success/:id" element={<RentalSuccess />} />
         <Route path="/my-bookings" element={<MyBooking />} />
+        <Route path="/laptops" element={<LaptopPage />} />
         <Route
           path="/profile"
           element={<Profile user={user} updateUser={updateUser} />}

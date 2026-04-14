@@ -1,0 +1,61 @@
+.laptops-page {
+  padding: 40px;
+  background: #020617;
+  color: white;
+}
+
+/* SEARCH */
+.search-bar {
+  width: 100%;
+  padding: 12px;
+  margin: 20px 0;
+  border-radius: 8px;
+  border: none;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filters input,
+.filters select {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+/* GRID */
+.laptop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.laptop-card {
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.laptop-card:hover {
+  transform: translateY(-5px);
+}
+
+.laptop-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.price {
+  color: #22c55e;
+  font-weight: bold;
+}
