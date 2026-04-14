@@ -47,7 +47,9 @@ const HeroBanner = () => {
   const handleRentNow = () => {
     navigate("/checkout", { state: { laptop } });
   };
-
+  const handleDetails = () => {
+    navigate(`/laptops/details/${laptop._id}`);
+  };
   return (
     <div className="hero-container">
       <div className="hero-overlay" />
@@ -75,7 +77,7 @@ const HeroBanner = () => {
             <button className="btn-primary" onClick={handleRentNow}>
               Rent Now
             </button>
-            <button className="btn-secondary">
+            <button className="btn-secondary" onClick={handleDetails}>
               View Details
             </button>
           </div>
@@ -83,10 +85,7 @@ const HeroBanner = () => {
 
         {/* RIGHT SIDE */}
         <div className="hero-image">
-          <img
-            src={`${baseURL}${laptop.images?.[0]}`}
-            alt={laptop.model}
-          />
+          <img src={`${baseURL}${laptop.images?.[0]}`} alt={laptop.model} />
         </div>
       </div>
     </div>
