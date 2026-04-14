@@ -13,8 +13,13 @@ const LaptopCard = ({ laptops = [] }) => {
     scrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
   };
 
-  const goToCheckout = (laptop) => {
+  const goToCheckout = (laptop, e) => {
+    e.stopPropagation(); // ✅ prevent card click
     navigate("/checkout", { state: { laptop } });
+  };
+
+  const handleDetails = (laptop) => {
+    navigate(`/laptops/details/${laptop._id}`);
   };
 
   return (
@@ -27,7 +32,11 @@ const LaptopCard = ({ laptops = [] }) => {
       {/* ROW */}
       <div className="row" ref={scrollRef}>
         {laptops.map((lap) => (
-          <div className="card" key={lap._id}>
+          <div
+            className="card clickable"
+            key={lap._id}
+            onClick={() => handleDetails(lap)} // ✅ FULL CARD CLICK
+          >
             <img
               src={`${baseURL}${lap.images?.[0]}`}
               alt={lap.model}
@@ -46,9 +55,8 @@ const LaptopCard = ({ laptops = [] }) => {
 
               <div className="card-bottom">
                 <span className="price">₹{lap.pricing?.perDay}</span>
-                <button onClick={() => goToCheckout(lap)}>
-                  Rent
-                </button>
+
+                <button onClick={(e) => goToCheckout(lap, e)}>Rent</button>
               </div>
             </div>
           </div>

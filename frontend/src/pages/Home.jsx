@@ -21,13 +21,9 @@ const Home = () => {
   }, []);
 
   // 🔥 Category Filters
-  const officeLaptops = laptops.filter(
-    (lap) => lap.category === "Office"
-  );
+  const officeLaptops = laptops.filter((lap) => lap.category === "Office");
 
-  const gamingLaptops = laptops.filter(
-    (lap) => lap.category === "Gaming"
-  );
+  const gamingLaptops = laptops.filter((lap) => lap.category === "Gaming");
 
   return (
     <div className="home-container">
@@ -44,12 +40,6 @@ const Home = () => {
       <div className="category-section">
         <h2>Gaming Laptops</h2>
         <LaptopCard laptops={gamingLaptops} />
-      </div>
-
-      {/* ALL LAPTOPS (OPTIONAL but recommended) */}
-      <div className="category-section">
-        <h2>All Laptops</h2>
-        <LaptopCard laptops={laptops} />
       </div>
     </div>
   );

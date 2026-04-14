@@ -144,3 +144,6 @@
 .card-bottom button:hover {
   background: #16a34a;
 }
+.clickable {
+  cursor: pointer;
+}
