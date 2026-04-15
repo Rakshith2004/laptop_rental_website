@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import API from "../../api/axios";
+import "./ResetPassword.css";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -61,92 +62,64 @@ const ResetPassword = () => {
 
   if (!token && !error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">Loading...</div>
+      <div className="auth-container">
+        <div className="auth-form">
+          <div className="text-center">Loading...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Reset Password
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Please enter your new password below.
-          </p>
-        </div>
+    <div className="auth-container">
+      <div className="auth-form">
+        <h2>Reset Password</h2>
+        <p className="auth-description">
+          Please enter your new password below.
+        </p>
 
         {message && (
-          <div className="rounded-md bg-green-50 p-4">
-            <div className="text-sm text-green-700">{message}</div>
-            <div className="text-sm text-green-700 mt-2">
-              Redirecting to login...
-            </div>
+          <div className="alert-success">
+            <div>{message}</div>
+            <div className="mt-2">Redirecting to login...</div>
           </div>
         )}
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <div className="text-sm text-red-700">{error}</div>
+          <div className="alert-error">
+            <div>{error}</div>
             <div className="mt-2">
-              <a
-                href="/forgot-password"
-                className="text-sm text-indigo-600 hover:text-indigo-500"
-              >
-                Request new reset link
-              </a>
+              <Link to="/forgot-password">Request new reset link</Link>
             </div>
           </div>
         )}
 
         {!message && (
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="new-password" className="sr-only">
-                  New Password
-                </label>
-                <input
-                  id="new-password"
-                  name="newPassword"
-                  type="password"
-                  required
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="New Password (min. 6 characters)"
-                  disabled={isLoading}
-                />
-              </div>
-              <div>
-                <label htmlFor="confirm-password" className="sr-only">
-                  Confirm Password
-                </label>
-                <input
-                  id="confirm-password"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Confirm Password"
-                  disabled={isLoading}
-                />
-              </div>
-            </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="password"
+              placeholder="New Password (min. 6 characters)"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              disabled={isLoading}
+              required
+            />
 
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-              >
-                {isLoading ? "Resetting..." : "Reset Password"}
-              </button>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={isLoading}
+              required
+            />
+
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Resetting..." : "Reset Password"}
+            </button>
+
+            <div className="text-center">
+              <Link to="/login">Back to Login</Link>
             </div>
           </form>
         )}
