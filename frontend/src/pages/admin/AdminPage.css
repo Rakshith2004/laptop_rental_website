@@ -1,0 +1,93 @@
+/* ONLY ADMIN PANEL STYLES (SCOPED) */
+
+.adminContainer {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+/* Sidebar */
+.adminContainer .sidebar {
+  width: 240px;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.adminContainer .logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+/* Navigation */
+.adminContainer .navItem {
+  display: block;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  color: #cbd5f5;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.adminContainer .navItem:hover {
+  background: #1e293b;
+  color: white;
+}
+
+/* Active link */
+.adminContainer .navItem.active {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Main Content */
+.adminContainer .mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f5f7fb;
+}
+
+/* Top Bar */
+.adminContainer .topBar {
+  background: white;
+  padding: 15px 25px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.adminContainer .topBar h1 {
+  font-size: 22px;
+  color: #1e293b;
+}
+
+/* Content Area */
+.adminContainer .contentArea {
+  padding: 25px;
+}
+
+/* Cards */
+.adminContainer .card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+/* Buttons (ONLY inside admin) */
+.adminContainer button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.adminContainer button:hover {
+  background: #2563eb;
+}

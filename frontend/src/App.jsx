@@ -5,7 +5,7 @@ import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import Profile from "./pages/user/Profile";
 import UploadKYC from "./pages/user/UploadKYC";
-import Dashboard from "./pages/admin/Dashboard";
+import AdminPage from "./pages/admin/AdminPage"; // ✅ IMPORTANT
 import Checkout from "./pages/rental/CheckOut";
 import RentalSuccess from "./pages/rental/RentalSuccess";
 import MyBooking from "./pages/user/MyBooking";
@@ -15,12 +15,12 @@ import LaptopDetails from "./pages/rental/LaptopDetails";
 import LaptopPage from "./pages/rental/LaptopPage";
 import { useState } from "react";
 import "./App.css";
+
 const App = () => {
   const [user, setUser] = useState(() =>
-    JSON.parse(localStorage.getItem("user")),
+    JSON.parse(localStorage.getItem("user"))
   );
 
-  // Single helper used by any page that needs to update the user
   const updateUser = (updatedUser) => {
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setUser(updatedUser);
@@ -29,16 +29,16 @@ const App = () => {
   return (
     <>
       <Navbar user={user} setUser={setUser} />
+
       <Routes>
+        {/* PUBLIC ROUTES */}
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Dashboard />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/laptops/details/:id" element={<LaptopDetails />} />
-        <Route path="/rental-success/:id" element={<RentalSuccess />} />
-        <Route path="/my-bookings" element={<MyBooking />} />
-        <Route path="/laptops" element={<LaptopPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* USER ROUTES */}
         <Route
           path="/profile"
           element={<Profile user={user} updateUser={updateUser} />}
@@ -47,8 +47,16 @@ const App = () => {
           path="/upload-kyc"
           element={<UploadKYC updateUser={updateUser} />}
         />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/my-bookings" element={<MyBooking />} />
+
+        {/* RENTAL ROUTES */}
+        <Route path="/laptops" element={<LaptopPage />} />
+        <Route path="/laptops/details/:id" element={<LaptopDetails />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/rental-success/:id" element={<RentalSuccess />} />
+
+        {/* ✅ ADMIN ROUTE (FIXED PROPERLY) */}
+        <Route path="/admin/*" element={<AdminPage />} />
       </Routes>
     </>
   );
