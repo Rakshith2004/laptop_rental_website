@@ -155,10 +155,23 @@ const getRentalById = async (req, res) => {
   }
 };
 
+const adminGetRental = async (req, res) => {
+  try {
+    const rentals = await Rental.find({})
+      .populate("laptopId", "brand model pricing")
+      .populate("userId", "name")
+      .sort("-createdAt");
+    res.status(200).json(rentals);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   createRental,
   getUserRentals,
   returnLaptop,
   cancelRental,
   getRentalById,
+  adminGetRental,
 };

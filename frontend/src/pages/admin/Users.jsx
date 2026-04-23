@@ -2,23 +2,25 @@ import { useEffect, useState } from "react";
 import API from "../../api/axios";
 
 const Users = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
-    API
-      .get("/api/users/profile", authHeader())
-      .then((res) => setUser(res.data));
+    API.get("/users/all", authHeader())
+      .then((res) => setUser(res.data))
+      .catch(console.error);
   }, []);
 
   return (
     <div>
       <h2>User Info</h2>
-      {user && (
-        <>
-          <p>Name: {user.name}</p>
-          <p>Email: {user.email}</p>
-        </>
-      )}
+      {user.map((u) => (
+        <div key={u._id}>
+          <p>User ID: {u._id}</p>
+          <p>Name: {u.name}</p>
+          <p>Email: {u.email}</p>
+          <p>Role: {u.role}</p>
+        </div>
+      ))}
     </div>
   );
 };

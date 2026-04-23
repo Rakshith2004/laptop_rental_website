@@ -4,7 +4,7 @@ import API from "../../api/axios";
 const Laptops = () => {
   const [laptops, setLaptops] = useState([]);
 
-  const BASE_URL = "http://localhost:8000"; // ✅ FIXED
+  const BASE_URL = "http://localhost:8000";
 
   useEffect(() => {
     const fetchLaptops = async () => {
@@ -21,7 +21,7 @@ const Laptops = () => {
 
   const deleteLaptop = async (id) => {
     try {
-      await API.delete(`/laptops/${id}`); // ✅ no authHeader
+      await API.delete(`/laptops/${id}`);
       setLaptops((prev) => prev.filter((l) => l._id !== id));
     } catch (err) {
       console.error("Delete error:", err);
@@ -32,12 +32,9 @@ const Laptops = () => {
     <div className="row">
       {laptops.map((lap) => (
         <div className="card clickable" key={lap._id}>
-          
           <img
             src={
-              lap.images?.[0]
-                ? `${BASE_URL}/${lap.images[0]}`
-                : "/no-image.png"
+              lap.images?.[0] ? `${BASE_URL}/${lap.images[0]}` : "/no-image.png"
             }
             alt={lap.model}
             className="card-img"
@@ -56,13 +53,9 @@ const Laptops = () => {
             <div className="card-bottom">
               <span className="price">₹{lap.pricing?.perDay}</span>
 
-              {/* ✅ Admin Action */}
-              <button onClick={() => deleteLaptop(lap._id)}>
-                Delete
-              </button>
+              <button onClick={() => deleteLaptop(lap._id)}>Delete</button>
             </div>
 
-            {/* ✅ Extra Info */}
             <p>Status: {lap.status}</p>
             <p>Available: {lap.availableUnits}</p>
           </div>

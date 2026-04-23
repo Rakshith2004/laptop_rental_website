@@ -7,6 +7,11 @@ const paymentSchema = new Schema(
       ref: "Rental",
       required: true,
     },
+    laptopId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Laptop",
+      required: true,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

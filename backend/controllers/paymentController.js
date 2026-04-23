@@ -17,7 +17,9 @@ const createOrder = async (req, res) => {
     const rental = await Rental.findById(rentalId);
 
     if (!rental) return res.status(404).json({ error: "Rental not found" });
-
+    if (!rental.laptopId) {
+      return res.status(400).json({ error: "Rental missing laptopId" });
+    }
     const options = {
       amount: rental.pricing.totalAmount * 100,
       currency: "INR",
@@ -30,6 +32,7 @@ const createOrder = async (req, res) => {
     await Payment.create({
       rentalId: rental._id,
       userId: req.user._id,
+      laptopId: rental.laptopId,
       amount: rental.pricing.totalAmount,
       type: "rental",
       gatewayOrderId: order.id,
@@ -171,9 +174,10 @@ const processRefund = async (req, res) => {
 //    GET /api/payments/all
 const getAllPayments = async (req, res) => {
   try {
-    const payments = await Payment.find()
+    const payments = await Payment.find({})
       .populate("userId", "name email")
       .populate("rentalId", "status")
+      .populate("laptopId", "brand model pricing")
       .sort("-createdAt");
 
     res.status(200).json(payments);

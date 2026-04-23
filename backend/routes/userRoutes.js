@@ -6,6 +6,7 @@ import {
   uploadKYC,
   forgotPassword,
   resetPassword,
+  getAllUsers,
 } from "../controllers/userContoller.js";
 import validate from "../middleware/validate.js";
 import {
@@ -18,6 +19,7 @@ import {
 import { protect } from "../middleware/authMiddleware.js";
 import { uploadKYCInfo } from "../middleware/uploadMiddleware.js";
 import { Router } from "express";
+import { admin } from "../middleware/adminMiddleware.js";
 
 const router = Router();
 
@@ -37,5 +39,7 @@ router.post(
 );
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
 router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
+
+router.get("/all", protect, admin, getAllUsers);
 
 export default router;

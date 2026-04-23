@@ -13,7 +13,7 @@ const Dashboard = () => {
       try {
         const [laptopsRes, rentalsRes, paymentsRes] = await Promise.all([
           API.get("/laptops"),
-          API.get("/rentals"),
+          API.get("/rentals/admin"),
           API.get("/payments/all"),
         ]);
 

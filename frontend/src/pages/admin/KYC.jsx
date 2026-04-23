@@ -7,7 +7,7 @@ const KYC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await API.get("/users/all"); 
+        const res = await API.get("/users/all");
         setUsers(res.data);
       } catch (err) {
         console.error("KYC fetch error:", err);
@@ -26,11 +26,15 @@ const KYC = () => {
       ) : (
         users.map((u) => (
           <div key={u._id} style={{ marginBottom: "15px" }}>
-            <p><strong>Name:</strong> {u.name}</p>
-            <p><strong>Email:</strong> {u.email}</p>
+            <p>
+              <strong>Name:</strong> {u.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {u.email}
+            </p>
             <p>
               <strong>KYC Status:</strong>{" "}
-              {u.kycStatus ? u.kycStatus : "Pending"}
+              {u.kycVerified ? "Verified" : "Pending"}
             </p>
             <hr />
           </div>
