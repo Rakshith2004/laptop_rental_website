@@ -1,4 +1,7 @@
 /* ===== PAGE SCOPE ===== */
+
+
+
 .admin-laptops-page {
   width: 100%;
 }
@@ -98,6 +101,12 @@
   color: #000;
 }
 
+.price {
+    position: relative;
+    top:10px;
+    right:8px;
+}
+
 /* ===== BUTTON ===== */
 .admin-laptops-page .delete-btn {
   padding: 6px 12px;
@@ -125,4 +134,27 @@
 .admin-laptops-page .laptops-loading {
   padding: 40px;
   text-align: center;
+}
+/* ===== BUTTON ===== */
+.admin-laptops-page .delete-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+
+  border: none;                 /* cleaner look */
+  background: #3b82f6;          /* blue */
+  color: #ffffff;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.admin-laptops-page .delete-btn:hover {
+  background: #2563eb;          /* darker blue */
+}
+
+/* ACTIVE (click feel) */
+.admin-laptops-page .delete-btn:active {
+  transform: scale(0.96);
 }

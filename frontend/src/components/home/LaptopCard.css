@@ -29,7 +29,10 @@
 .row::-webkit-scrollbar {
   display: none;
 }
-
+.butt{
+  position: relative;
+  top:10px;
+}
 /* ================= NAV BUTTONS ================= */
 .nav-btn {
   position: absolute;
