@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
-
+import UserCard from "../../components/kyc/UserCard";
 const KYC = () => {
   const [users, setUsers] = useState([]);
 
@@ -17,28 +17,24 @@ const KYC = () => {
     fetchUsers();
   }, []);
 
+  const pendingUsers = users.filter((u) => u.kycStatus === "pending");
+  const rejectedUsers = users.filter((u) => u.kycStatus === "rejected");
+
   return (
     <div className="card">
-      <h2>KYC Requests</h2>
-
-      {users.length === 0 ? (
-        <p>No users found</p>
+      <h2>KYC Management</h2>
+      <h3>Pending Requests</h3>
+      {pendingUsers.length === 0 ? (
+        <p>No pending KYC</p>
       ) : (
-        users.map((u) => (
-          <div key={u._id} style={{ marginBottom: "15px" }}>
-            <p>
-              <strong>Name:</strong> {u.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {u.email}
-            </p>
-            <p>
-              <strong>KYC Status:</strong>{" "}
-              {u.kycVerified ? "Verified" : "Pending"}
-            </p>
-            <hr />
-          </div>
-        ))
+        pendingUsers.map((u) => <UserCard key={u._id} user={u} />)
+      )}
+
+      <h3>Rejected Requests</h3>
+      {rejectedUsers.length === 0 ? (
+        <p>No rejected KYC</p>
+      ) : (
+        rejectedUsers.map((u) => <UserCard key={u._id} user={u} />)
       )}
     </div>
   );
