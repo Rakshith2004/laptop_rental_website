@@ -1,7 +1,7 @@
 import { useState } from "react";
 import API from "../../api/axios";
 import "../../pages/admin/KYC.css";
-
+import "./UserCard.css";
 const UserCard = ({ user }) => {
   const [showModal, setShowModal] = useState(false);
 
