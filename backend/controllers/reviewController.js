@@ -88,4 +88,21 @@ const deleteReview = async (req, res) => {
   }
 };
 
-export { addReview, getLaptopReviews, getUserReviews, deleteReview };
+const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({})
+      .populate("userId", "name")
+      .populate("laptopId", "brand model")
+      .sort("-createdAt");
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export {
+  addReview,
+  getLaptopReviews,
+  getUserReviews,
+  deleteReview,
+  getAllReviews,
+};

@@ -17,13 +17,12 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      required: true,
       unique: true,
+      sparse: true,
     },
     passwordHash: {
       type: String,
       required: true,
-      trim: true,
     },
     role: {
       type: String,
@@ -39,9 +38,9 @@ const userSchema = new Schema(
       default: null,
     },
     address: {
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
+      street: { type: String, required: false },
+      city: { type: String, required: false },
+      state: { type: String, required: false },
       pincode: { type: String },
     },
   },

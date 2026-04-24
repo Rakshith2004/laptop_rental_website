@@ -10,6 +10,13 @@ const laptopSchema = new Schema(
       processor: { type: String, required: true },
       display: { type: String },
       os: { type: String },
+      gpu: { type: String },
+    },
+    category: {
+      type: String,
+      enum: ["Gaming", "Office", "Student", "Workstation"],
+      required: true,
+      default: "Office",
     },
     images: [{ type: String }],
     condition: {
@@ -34,6 +41,8 @@ const laptopSchema = new Schema(
   },
   { timestamps: true },
 );
+laptopSchema.index({ category: 1 });
+laptopSchema.index({ tags: 1 });
 
 const Laptop = mongoose.model("Laptop", laptopSchema);
 export default Laptop;

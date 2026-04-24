@@ -17,7 +17,9 @@ const createOrder = async (req, res) => {
     const rental = await Rental.findById(rentalId);
 
     if (!rental) return res.status(404).json({ error: "Rental not found" });
-
+    if (!rental.laptopId) {
+      return res.status(400).json({ error: "Rental missing laptopId" });
+    }
     const options = {
       amount: rental.pricing.totalAmount * 100,
       currency: "INR",
@@ -30,6 +32,7 @@ const createOrder = async (req, res) => {
     await Payment.create({
       rentalId: rental._id,
       userId: req.user._id,
+      laptopId: rental.laptopId,
       amount: rental.pricing.totalAmount,
       type: "rental",
       gatewayOrderId: order.id,
@@ -62,7 +65,7 @@ const verifyPayment = async (req, res) => {
     if (razorpay_signature === expectedSign) {
       // 1. Update the Payment record to success
       await Payment.findOneAndUpdate(
-        { gatewayOrderId: razorpay_order_id },
+        { gatewayOrderId: razorpay_order_id, status: "pending" },
         {
           status: "success",
           gatewayPaymentId: razorpay_payment_id,
@@ -72,6 +75,11 @@ const verifyPayment = async (req, res) => {
 
       // 2. Update the Rental status to active
       await Rental.findByIdAndUpdate(rentalId, { status: "active" });
+
+      await Payment.deleteMany({
+        status: "pending",
+        createdAt: { $lt: new Date(Date.now() - 60 * 60 * 1000) },
+      });
 
       return res.status(200).json({
         message: "Payment recorded and rental activated",
@@ -93,8 +101,18 @@ const verifyPayment = async (req, res) => {
 
 const getPaymentHistory = async (req, res) => {
   try {
-    const payments = await Payment.find({ userId: req.user._id })
-      .populate("rentalId", "rentedFrom rentedTo")
+    const payments = await Payment.find({
+      userId: req.user._id,
+      status: "success",
+    })
+      .populate({
+        path: "rentalId",
+        select: "rentedFrom rentedTo laptopId",
+        populate: {
+          path: "laptopId",
+          select: "brand model images specs",
+        },
+      })
       .sort("-createdAt");
 
     res.status(200).json(payments);
@@ -156,9 +174,10 @@ const processRefund = async (req, res) => {
 //    GET /api/payments/all
 const getAllPayments = async (req, res) => {
   try {
-    const payments = await Payment.find()
+    const payments = await Payment.find({})
       .populate("userId", "name email")
       .populate("rentalId", "status")
+      .populate("laptopId", "brand model pricing")
       .sort("-createdAt");
 
     res.status(200).json(payments);

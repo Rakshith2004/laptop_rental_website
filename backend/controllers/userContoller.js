@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-
+import crypto from "crypto";
+import { PasswordResetToken } from "../models/PasswordResetToken.js";
+import { sendPasswordResetEmail } from "../utils/sendEmail.js";
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -83,41 +85,49 @@ const getUserProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    console.log(req.body);
+    if (!req.user) return res.status(401).json({ error: "Unauthorized" });
 
     const { name, email, phone, street, city, state, pincode } = req.body;
 
     const updateData = {};
-    if (name) updateData.name = name;
-    if (email) updateData.email = email;
-    if (phone) updateData.phone = phone;
-    if (street || city || state || pincode) {
-      updateData.address = {};
-      if (street) updateData.address.street = street;
-      if (city) updateData.address.city = city;
-      if (state) updateData.address.state = state;
-      if (pincode) updateData.address.pincode = pincode;
-    }
 
-    if (Object.keys(updateData).length === 0) {
+    if (name?.trim()) updateData.name = name.trim();
+    if (email?.trim()) updateData.email = email.trim();
+    if (phone?.trim()) updateData.phone = phone.trim();
+    if (street?.trim()) updateData["address.street"] = street.trim();
+    if (city?.trim()) updateData["address.city"] = city.trim();
+    if (state?.trim()) updateData["address.state"] = state.trim();
+    if (pincode?.trim()) updateData["address.pincode"] = pincode.trim();
+
+    if (Object.keys(updateData).length === 0)
       return res.status(400).json({ error: "No data to update" });
+
+    if (updateData.email) {
+      const existing = await User.findOne({ email: updateData.email });
+      if (existing && existing._id.toString() !== req.user._id.toString())
+        return res.status(400).json({ error: "Email already in use" });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, updateData, {
-      new: true,
-      runValidation: true,
-    });
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
+    if (updateData.phone) {
+      const existing = await User.findOne({ phone: updateData.phone });
+      if (existing && existing._id.toString() !== req.user._id.toString())
+        return res.status(400).json({ error: "Phone number already in use" });
     }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: updateData },
+      { returnDocument: "after", runValidators: true },
+    );
+
+    if (!updatedUser) return res.status(404).json({ error: "User not found" });
+
     const userResponse = updatedUser.toObject();
     delete userResponse.passwordHash;
 
-    res.status(200).json(userResponse);
+    res
+      .status(200)
+      .json({ message: "Profile updated successfully", user: userResponse });
   } catch (error) {
     console.error("UPDATE PROFILE ERROR:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -141,7 +151,7 @@ const uploadKYC = async (req, res) => {
         kycDocument: req.file.path,
         kycVerified: false,
       },
-      { new: true, runValidators: true },
+      { returnDocument: "after", runValidators: true },
     ).select("-passwordHash");
 
     if (!updatedUser) {
@@ -159,4 +169,136 @@ const uploadKYC = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getUserProfile, updateProfile, uploadKYC };
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Generic response for security (prevents user enumeration)
+    const genericResponse = {
+      success: true,
+      message:
+        "If an account exists with this email, you will receive a password reset link.",
+    };
+
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(200).json(genericResponse);
+    }
+
+    // Generate secure reset token
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+
+    // Save hashed token to database
+    await PasswordResetToken.create({
+      userId: user._id,
+      tokenHash: tokenHash,
+      expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+    });
+
+    // Send email with raw token
+    try {
+      await sendPasswordResetEmail(email, rawToken, user.name);
+    } catch (emailErr) {
+      console.error("Email send failed:", emailErr);
+      // token is saved, you can still respond
+    }
+
+    res.status(200).json(genericResponse);
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred. Please try again later.",
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    // Validation
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Token and new password are required.",
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long.",
+      });
+    }
+
+    // Hash the received token
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+    // Find valid token (not expired)
+    const resetToken = await PasswordResetToken.findOne({
+      tokenHash: tokenHash,
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (!resetToken) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token. Please request a new one.",
+      });
+    }
+
+    // Find user
+    const user = await User.findById(resetToken.userId);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Update password (pre-save hook will hash it automatically)
+    user.passwordHash = newPassword;
+    await user.save();
+
+    // Delete used token (one-time use)
+    await PasswordResetToken.deleteOne({ _id: resetToken._id });
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Password has been reset successfully. You can now login with your new password.",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred. Please try again later.",
+    });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export {
+  registerUser,
+  loginUser,
+  getUserProfile,
+  getAllUsers,
+  updateProfile,
+  uploadKYC,
+  forgotPassword,
+  resetPassword,
+};

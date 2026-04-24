@@ -4,18 +4,40 @@ import User from "../models/User.js";
 
 const createRental = async (req, res) => {
   try {
-    const {
-      laptopId,
-      rentedFrom,
-      rentedTo,
-      totalDays,
-      baseAmount,
-      totalAmount,
-      deliveryType,
-      deliveryAddress,
-    } = req.body;
+    const { laptopId, rentedFrom, rentedTo } = req.body;
 
-    // 1. Verify User KYC Status
+    // 1. Fetch Laptop to get total capacity
+    const laptop = await Laptop.findById(laptopId);
+    if (!laptop || laptop.status === "maintenance") {
+      return res
+        .status(404)
+        .json({ error: "Laptop unavailable or not found." });
+    }
+
+    // 2. Advanced Overlap Check: Count active rentals during this period
+    const start = new Date(rentedFrom);
+    const end = new Date(rentedTo);
+
+    const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+    const baseAmount = totalDays * laptop.pricing.perDay;
+
+    const totalAmount = baseAmount + laptop.securityDeposit;
+
+    const activeRentalsCount = await Rental.countDocuments({
+      laptopId,
+      status: { $in: ["pending", "active"] },
+      rentedFrom: { $lt: end },
+      rentedTo: { $gt: start },
+    });
+
+    if (activeRentalsCount >= laptop.totalUnits) {
+      return res.status(400).json({
+        error: `Sorry, all ${laptop.totalUnits} units are fully booked for these dates.`,
+      });
+    }
+
+    // 3. Verify User KYC Status (as per your existing model)
     const user = await User.findById(req.user._id);
     if (!user.kycVerified) {
       return res
@@ -23,38 +45,22 @@ const createRental = async (req, res) => {
         .json({ error: "KYC verification required before renting." });
     }
 
-    // 2. Check Laptop Availability
-    const laptop = await Laptop.findById(laptopId);
-    if (
-      !laptop ||
-      laptop.availableUnits <= 0 ||
-      laptop.status !== "available"
-    ) {
-      return res
-        .status(400)
-        .json({ error: "Laptop is currently unavailable." });
-    }
-
-    // 3. Create Rental Record
+    // 4. Create Rental Record
     const rental = await Rental.create({
       userId: req.user._id,
       laptopId,
-      rentedFrom,
-      rentedTo,
+      rentedFrom: start,
+      rentedTo: end,
       totalDays,
-      deliveryType,
-      deliveryAddress:
-        deliveryType === "delivery" ? deliveryAddress : undefined,
-      pricing: {
-        baseAmount,
-        totalAmount,
-      },
+      deliveryType: "pickup",
+      pricing: { baseAmount, totalAmount },
       securityDeposit: laptop.securityDeposit,
     });
 
-    // 4. Update Laptop Inventory
+    // 5. Update Live Inventory
+    // Note: availableUnits now represents "Current Instant Availability"
     laptop.availableUnits -= 1;
-    if (laptop.availableUnits === 0) laptop.status = "rented";
+    if (laptop.availableUnits <= 0) laptop.status = "rented";
     await laptop.save();
 
     res.status(201).json(rental);
@@ -136,4 +142,36 @@ const cancelRental = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-export { createRental, getUserRentals, returnLaptop, cancelRental };
+
+const getRentalById = async (req, res) => {
+  try {
+    const rental = await Rental.findById(req.params.id)
+      .populate("laptopId", "brand model pricing")
+      .populate("userId", "name email");
+    if (!rental) return res.status(404).json({ error: "Rental not found" });
+    res.status(200).json(rental);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const adminGetRental = async (req, res) => {
+  try {
+    const rentals = await Rental.find({})
+      .populate("laptopId", "brand model pricing")
+      .populate("userId", "name")
+      .sort("-createdAt");
+    res.status(200).json(rentals);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export {
+  createRental,
+  getUserRentals,
+  returnLaptop,
+  cancelRental,
+  getRentalById,
+  adminGetRental,
+};

@@ -4,22 +4,42 @@ import {
   getUserProfile,
   updateProfile,
   uploadKYC,
+  forgotPassword,
+  resetPassword,
+  getAllUsers,
 } from "../controllers/userContoller.js";
-
+import validate from "../middleware/validate.js";
+import {
+  registerUserSchema,
+  loginUserSchema,
+  updateProfileSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "../validators/index.js";
 import { protect } from "../middleware/authMiddleware.js";
-import { upload } from "../middleware/uploadMiddleware.js";
+import { uploadKYCInfo } from "../middleware/uploadMiddleware.js";
 import { Router } from "express";
+import { admin } from "../middleware/adminMiddleware.js";
 
 const router = Router();
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/register", validate(registerUserSchema), registerUser);
+router.post("/login", validate(loginUserSchema), loginUser);
 
 router
   .route("/profile")
   .get(protect, getUserProfile)
-  .patch(protect, updateProfile);
+  .patch(protect, validate(updateProfileSchema), updateProfile);
 
-router.post("/upload-kyc", protect, upload.single("kycProof"), uploadKYC);
+router.post(
+  "/upload-kyc",
+  protect,
+  uploadKYCInfo.single("document"),
+  uploadKYC,
+);
+router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
+router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
+
+router.get("/all", protect, admin, getAllUsers);
 
 export default router;
