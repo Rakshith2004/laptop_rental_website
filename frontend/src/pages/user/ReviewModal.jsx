@@ -14,16 +14,22 @@ const ReviewModal = ({
   if (!selectedBooking) return null;
 
   return (
-    <div className="review-modal">
-      <div className="review-box">
-        <h3>{existingReview ? "Update Review" : "Write Review"}</h3>
+    <div className="reviewModalOverlay">
+      <div className="reviewModalCard">
 
-        {/* ⭐ Stars */}
-        <div className="stars">
+        {/* TITLE */}
+        <h3>
+          {existingReview ? "Update Review" : "Write Review"}
+        </h3>
+
+        {/* ⭐ STARS */}
+        <div className="reviewStars">
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
-              className={`star ${star <= rating ? "active" : ""}`}
+              className={`reviewStar ${
+                star <= rating ? "active" : ""
+              }`}
               onClick={() => setRating(star)}
             >
               ★
@@ -31,20 +37,29 @@ const ReviewModal = ({
           ))}
         </div>
 
-        {/* Comment */}
+        {/* COMMENT */}
         <textarea
+          className="reviewTextarea"
           placeholder="Write your experience..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
 
-        {/* Actions */}
-        <div className="review-actions">
-          <button onClick={onSubmit}>
+        {/* ACTION BUTTONS */}
+        <div className="reviewActions">
+          <button
+            className="reviewBtn updateBtn"
+            onClick={onSubmit}
+          >
             {existingReview ? "Update" : "Post"}
           </button>
 
-          <button onClick={onClose}>Cancel</button>
+          <button
+            className="reviewBtn cancelBtn"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

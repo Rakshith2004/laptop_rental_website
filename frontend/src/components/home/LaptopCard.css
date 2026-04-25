@@ -31,7 +31,7 @@
 }
 .butt{
   position: relative;
-  top:10px;
+  bottom:1px;
 }
 /* ================= NAV BUTTONS ================= */
 .nav-btn {
@@ -64,7 +64,7 @@
 
 /* ================= CARD ================= */
 .card {
-  min-width: 250px;
+  min-width: 300px;
   max-width: 250px;
   background: #0f172a;
   border-radius: 12px;
@@ -140,6 +140,8 @@
   border-radius: 8px;
   font-weight: 600;
   font-size: 13px;
+  position: relative;
+  left:1px;
 }
 
 /* ===== BUTTON ===== */
@@ -156,6 +158,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: 0.2s ease;
+  position: relative;
+  
 }
 
 .card-bottom button:hover {
