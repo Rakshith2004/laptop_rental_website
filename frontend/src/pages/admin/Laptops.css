@@ -103,8 +103,8 @@
 
 .price {
     position: relative;
-    top:10px;
-    right:8px;
+    bottom:0px;
+    right:18px;
 }
 
 /* ===== BUTTON ===== */
