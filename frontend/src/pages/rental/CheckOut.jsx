@@ -26,16 +26,9 @@ const Checkout = () => {
     rentedFrom && rentedTo
       ? Math.max(
           Math.ceil(
-<<<<<<< HEAD
             (new Date(rentedTo) - new Date(rentedFrom)) / (1000 * 60 * 60 * 24),
           ),
           0,
-=======
-            (new Date(rentedTo) - new Date(rentedFrom)) /
-              (1000 * 60 * 60 * 24)
-          ),
-          0
->>>>>>> 7db5b02f8c771e5eb8e3fbbcb2e3dcafc98b63b9
         )
       : 0;
 
@@ -119,10 +112,6 @@ const Checkout = () => {
       <div className="checkoutPageLayout">
         {/* ================= LEFT ================= */}
         <div className="checkoutLeftSection">
-<<<<<<< HEAD
-=======
-
->>>>>>> 7db5b02f8c771e5eb8e3fbbcb2e3dcafc98b63b9
           {/* PRODUCT CARD */}
           <div className="checkoutCard checkoutProductCard">
             <img
@@ -166,23 +155,14 @@ const Checkout = () => {
             </div>
 
             <div className="checkoutFormGroup">
-<<<<<<< HEAD
               <label>Delivery Type</label>
               <input
-=======
-            <label>Delivery Type</label>
-            <input
->>>>>>> 7db5b02f8c771e5eb8e3fbbcb2e3dcafc98b63b9
                 type="text"
                 className="checkoutSelect"
                 value="Pickup"
                 disabled
               />
-<<<<<<< HEAD
             </div>
-=======
-          </div>
->>>>>>> 7db5b02f8c771e5eb8e3fbbcb2e3dcafc98b63b9
 
             {deliveryType === "delivery" && (
               <textarea
@@ -215,13 +195,7 @@ const Checkout = () => {
               <span>₹{laptop.securityDeposit}</span>
             </div>
 
-<<<<<<< HEAD
             <div className="checkoutTotal">Total: ₹{totalAmount}</div>
-=======
-            <div className="checkoutTotal">
-              Total: ₹{totalAmount}
-            </div>
->>>>>>> 7db5b02f8c771e5eb8e3fbbcb2e3dcafc98b63b9
 
             <button
               className="checkoutPayBtn"
@@ -244,8 +218,4 @@ const Checkout = () => {
   );
 };
 
-<<<<<<< HEAD
 export default Checkout;
-=======
-export default Checkout;
->>>>>>> 7db5b02f8c771e5eb8e3fbbcb2e3dcafc98b63b9
