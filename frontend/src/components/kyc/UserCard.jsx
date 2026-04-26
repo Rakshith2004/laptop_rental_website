@@ -61,7 +61,26 @@ const UserCard = ({ user }) => {
             <h3>KYC Document</h3>
 
             {/* Image preview */}
-            <img src={docUrl} alt="KYC Document" />
+            {docUrl?.toLowerCase().endsWith(".pdf") ? (
+              <iframe
+                src={docUrl}
+                title="PDF Preview"
+                width="100%"
+                height="500px"
+                style={{ borderRadius: "8px" }}
+              />
+            ) : (
+              <img
+                src={docUrl}
+                alt="KYC Document"
+                style={{
+                  width: "100%",
+                  maxHeight: "500px",
+                  objectFit: "contain",
+                  borderRadius: "8px",
+                }}
+              />
+            )}
 
             <br />
             <br />
