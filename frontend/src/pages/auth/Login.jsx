@@ -30,7 +30,10 @@ const Login = ({ setUser }) => {
       setUser(res.data.user);
       navigate("/");
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
+      alert(
+        error.response?.data?.message ||
+          "Account not found, Please create an account to continue.",
+      );
     }
   };
 
@@ -62,8 +65,7 @@ const Login = ({ setUser }) => {
         <button type="submit">Login</button>
 
         <p>
-          Don’t have an account?{" "}
-          <Link to="/signup">Signup</Link>
+          Don’t have an account? <Link to="/signup">Signup</Link>
         </p>
       </form>
     </div>

@@ -47,7 +47,9 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ error: "Invalid email or password" });
+      return res.status(400).json({
+        error: "Account not found, Please create an account to continue.",
+      });
     }
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {

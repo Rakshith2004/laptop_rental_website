@@ -79,7 +79,7 @@ const addLaptop = async (req, res) => {
 
     res.status(201).json(laptop);
   } catch (error) {
-    console.error("🔥 BACKEND ERROR:", error); // FULL ERROR
+    console.error("BACKEND ERROR:", error); // FULL ERROR
     res.status(500).json({ error: error.message });
   }
 };
