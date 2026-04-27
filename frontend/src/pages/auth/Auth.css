@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
 
-  background: #ffffff; /* force white */
+  background: #ffffff;
   padding: 20px;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .authPage-form input:focus {
-  border-color: #0E3386;
+  border-color: #0e3386;
   outline: none;
   background: #fff;
   box-shadow: 0 0 0 2px rgba(14, 51, 134, 0.15);
@@ -57,7 +57,7 @@
 
 .authPage-textRight a {
   font-size: 13px;
-  color: #0E3386;
+  color: #0e3386;
 }
 
 /* ===== BUTTON ===== */
@@ -66,7 +66,7 @@
   border-radius: 10px;
   border: none;
 
-  background: #0E3386;
+  background: #0e3386;
   color: white;
 
   font-weight: 600;
@@ -85,7 +85,7 @@
 }
 
 .authPage-form a {
-  color: #0E3386;
+  color: #0e3386;
   text-decoration: none;
 }
 

@@ -97,9 +97,15 @@
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 
 /* ===== Table ===== */
@@ -108,7 +114,7 @@
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
-  overflow-x: auto;           /* 🔧 prevent horizontal overflow on mobile */
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -122,7 +128,7 @@
 .dashboard-table table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 500px;           /* 🔧 ensures table doesn't squish on mobile */
+  min-width: 500px;
 }
 
 .dashboard-table th,
