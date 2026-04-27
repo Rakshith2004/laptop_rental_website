@@ -33,9 +33,7 @@ const MyBooking = () => {
 
   const getDays = (from, to) => {
     if (!from || !to) return 0;
-    return Math.ceil(
-      (new Date(to) - new Date(from)) / (1000 * 60 * 60 * 24)
-    );
+    return Math.ceil((new Date(to) - new Date(from)) / (1000 * 60 * 60 * 24));
   };
 
   const handleOpen = async (booking) => {
@@ -85,13 +83,12 @@ const MyBooking = () => {
       alert("Review saved!");
       setSelectedBooking(null);
     } catch (err) {
-      alert("Error saving review");
+      alert("Please return the laptop to write a review");
     }
   };
 
   return (
     <div className="bookingPageWrapper">
-      
       {/* HEADER */}
       <div className="bookingHeader">
         <h2>My Bookings</h2>
@@ -127,11 +124,8 @@ const MyBooking = () => {
 
                 {/* CONTENT */}
                 <div className="bookingCardContent">
-                  
                   <h3>
-                    {laptop
-                      ? `${laptop.brand} ${laptop.model}`
-                      : "Laptop"}
+                    {laptop ? `${laptop.brand} ${laptop.model}` : "Laptop"}
                   </h3>
 
                   <p className="bookingSpecs">
@@ -163,14 +157,10 @@ const MyBooking = () => {
 
                     <span
                       className={`bookingStatus ${
-                        booking.status === "success"
-                          ? "paid"
-                          : "pending"
+                        booking.status === "success" ? "paid" : "pending"
                       }`}
                     >
-                      {booking.status === "success"
-                        ? "Paid"
-                        : "Pending"}
+                      {booking.status === "success" ? "Paid" : "Pending"}
                     </span>
                   </div>
                 </div>

@@ -26,10 +26,9 @@ const Checkout = () => {
     rentedFrom && rentedTo
       ? Math.max(
           Math.ceil(
-            (new Date(rentedTo) - new Date(rentedFrom)) /
-              (1000 * 60 * 60 * 24)
+            (new Date(rentedTo) - new Date(rentedFrom)) / (1000 * 60 * 60 * 24),
           ),
-          0
+          0,
         )
       : 0;
 
@@ -113,7 +112,6 @@ const Checkout = () => {
       <div className="checkoutPageLayout">
         {/* ================= LEFT ================= */}
         <div className="checkoutLeftSection">
-
           {/* PRODUCT CARD */}
           <div className="checkoutCard checkoutProductCard">
             <img
@@ -157,14 +155,14 @@ const Checkout = () => {
             </div>
 
             <div className="checkoutFormGroup">
-            <label>Delivery Type</label>
-            <input
+              <label>Delivery Type</label>
+              <input
                 type="text"
                 className="checkoutSelect"
                 value="Pickup"
                 disabled
               />
-          </div>
+            </div>
 
             {deliveryType === "delivery" && (
               <textarea
@@ -197,9 +195,7 @@ const Checkout = () => {
               <span>₹{laptop.securityDeposit}</span>
             </div>
 
-            <div className="checkoutTotal">
-              Total: ₹{totalAmount}
-            </div>
+            <div className="checkoutTotal">Total: ₹{totalAmount}</div>
 
             <button
               className="checkoutPayBtn"

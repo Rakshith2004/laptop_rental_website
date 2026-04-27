@@ -8,6 +8,8 @@ import {
   MemoryStick,
   Laptop,
   BadgeCheck,
+  Gpu,
+  MonitorCog,
 } from "lucide-react";
 import "./LaptopDetails.css";
 
@@ -54,21 +56,18 @@ const LaptopDetails = () => {
   return (
     <div className="laptopDetailsWrapper">
       <div className="laptopDetailsLayout">
-
         {/* ===== IMAGE ===== */}
         <div>
           <div className="laptopImageSection laptopDetailsCard">
-          <img
-            src={`http://localhost:8000/${laptop.images?.[0] || ""}`}
-            alt={laptop.model}
-          />
+            <img
+              src={`http://localhost:8000/${laptop.images?.[0] || ""}`}
+              alt={laptop.model}
+            />
+          </div>
         </div>
-        </div>
-        
 
         {/* ===== INFO ===== */}
         <div className="laptopInfoSection laptopDetailsCard">
-
           {/* TITLE */}
           <div>
             <h1 className="laptopTitle">
@@ -100,10 +99,10 @@ const LaptopDetails = () => {
               <Monitor size={14} /> {laptop.specs?.display || "N/A"}
             </div>
             <div className="laptopSpecItem">
-              <Laptop size={14} /> {laptop.specs?.gpu || "N/A"}
+              <Gpu size={14} /> {laptop.specs?.gpu || "N/A"}
             </div>
             <div className="laptopSpecItem">
-              <Laptop size={14} /> {laptop.specs?.os || "N/A"}
+              <MonitorCog size={14} /> {laptop.specs?.os || "N/A"}
             </div>
           </div>
 

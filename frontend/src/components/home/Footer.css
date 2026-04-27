@@ -77,3 +77,24 @@
   font-size: 13px;
   color: #6b7280;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .footer {
+    padding: 30px 16px 16px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .footer-section {
+    min-width: unset;
+  }
+
+  .footer-section a {
+    justify-content: center;
+  }
+}

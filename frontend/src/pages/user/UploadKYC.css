@@ -249,3 +249,30 @@
   align-self: flex-start;
   margin-top: -12px;
 }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .kyc-container {
+    padding: 24px 16px;
+  }
+
+  .kyc-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kyc-selected-name {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .kyc-btn-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .kyc-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -109,8 +109,8 @@
 }
 
 /* ===== INPUTS ===== */
-input,
-select {
+.laptop-form-container input,
+.laptop-form-container select {
   padding: 12px 14px;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
@@ -120,14 +120,14 @@ select {
 }
 
 /* Hover */
-input:hover,
-select:hover {
+.laptop-form-container input:hover,
+.laptop-form-container select:hover {
   border-color: #94a3b8;
 }
 
 /* Focus */
-input:focus,
-select:focus {
+.laptop-form-container input:focus,
+.laptop-form-container select:focus {
   outline: none;
   border-color: #0E3386;
   background: #ffffff;
@@ -135,14 +135,14 @@ select:focus {
 }
 
 /* ===== FILE INPUT ===== */
-input[type="file"] {
+.laptop-form-container input[type="file"] {
   background: #fff;
   border: 2px dashed #cbd5f5;
   padding: 14px;
   cursor: pointer;
 }
 
-input[type="file"]:hover {
+.laptop-form-container input[type="file"]:hover {
   border-color: #0E3386;
 }
 

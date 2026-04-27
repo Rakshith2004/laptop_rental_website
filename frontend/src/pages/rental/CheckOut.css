@@ -1,28 +1,30 @@
 /* ===== GOOGLE FONT ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
-/* ===== ROOT WRAPPER (VERY IMPORTANT FOR ISOLATION) ===== */
+/* ===== ROOT WRAPPER ===== */
 .checkoutPageWrapper {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: #f5f7fb;
   min-height: 100vh;
   padding: 30px 20px;
+  color: #111827;
 }
 
 /* ===== TITLE ===== */
 .checkoutPageTitle {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
   margin-bottom: 25px;
-  color: #111827;
 }
 
 /* ===== MAIN GRID ===== */
 .checkoutPageLayout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 25px;
-  align-items: start;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 28px;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: auto;
 }
 
 /* ===== LEFT SECTION ===== */
@@ -37,31 +39,33 @@
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
-  padding: 18px;
-  transition: all 0.25s ease;
+  padding: 20px;
+  transition: 0.25s ease;
 }
 
 .checkoutCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 /* ===== PRODUCT CARD ===== */
 .checkoutProductCard {
   display: flex;
-  gap: 15px;
+  gap: 16px;
   align-items: center;
 }
 
 .checkoutProductImg {
-  width: 120px;
-  height: 90px;
-  object-fit: cover;
+  width: 130px;
+  height: 95px;
+  object-fit: contain;
   border-radius: 10px;
+  background: #fff;
+  padding: 6px;
 }
 
 .checkoutProductInfo h3 {
-  font-size: 16px;
+  font-size: 17px;
   margin-bottom: 6px;
 }
 
@@ -75,13 +79,12 @@
 .checkoutFormCard h3 {
   margin-bottom: 15px;
   font-size: 18px;
-  
 }
 
 .checkoutFormGroup {
   display: flex;
   flex-direction: column;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .checkoutFormGroup label {
@@ -90,21 +93,24 @@
   color: #374151;
 }
 
+/* ===== INPUTS ===== */
 .checkoutInput,
 .checkoutSelect,
 .checkoutTextarea {
-  padding: 10px;
+  padding: 11px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   font-size: 14px;
-  outline: none;
-  transition: 0.2s;
+  transition: 0.2s ease;
+  background: #fff;
 }
 
 .checkoutInput:focus,
 .checkoutSelect:focus,
 .checkoutTextarea:focus {
-  border-color: #111;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+  outline: none;
 }
 
 .checkoutTextarea {
@@ -113,52 +119,54 @@
   resize: none;
 }
 
-/* ===== RIGHT SIDE (PRICE) ===== */
+/* ===== RIGHT SIDE (PRICE CARD) ===== */
 .checkoutRightSection {
   position: sticky;
-  top: 90px;
+  top: 100px;
 }
 
-.checkoutPriceCard h3 {
-  margin-bottom: 12px;
+.checkoutPriceCard {
+  padding: 22px;
 }
 
+/* ===== PRICE ROW ===== */
 .checkoutPriceRow {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  margin: 6px 0;
+  margin: 8px 0;
+  color: #374151;
 }
 
+/* ===== TOTAL ===== */
 .checkoutTotal {
-  margin-top: 12px;
-  font-size: 18px;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 20px;
   font-weight: 600;
-  color: black;
 }
 
 /* ===== BUTTON ===== */
 .checkoutPayBtn {
-  margin-top: 15px;
+  margin-top: 18px;
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border-radius: 10px;
-  border: 1px solid #0E3386;
-  background: transparent;
-  color: #0E3386;
+  border: none;
+  background: #4f46e5;
+  color: white;
   font-weight: 500;
   cursor: pointer;
   transition: 0.25s ease;
 }
 
 .checkoutPayBtn:hover {
-  background: #0E3386;
-  color: #fff;
+  background: #4338ca;
 }
 
 .checkoutPayBtn:disabled {
   background: #e5e7eb;
-  border: none;
   color: #888;
   cursor: not-allowed;
 }
@@ -181,5 +189,15 @@
 
   .checkoutRightSection {
     position: static;
+  }
+
+  .checkoutProductCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkoutProductImg {
+    width: 100%;
+    height: auto;
   }
 }

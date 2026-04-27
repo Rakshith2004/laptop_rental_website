@@ -165,3 +165,25 @@
 .clickable {
   cursor: pointer;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .row {
+    padding: 20px 16px;
+    gap: 14px;
+  }
+
+  .card {
+    min-width: 240px;
+    max-width: 240px;
+  }
+
+  .nav-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .nav-btn.left { left: 4px; }
+  .nav-btn.right { right: 4px; }
+}
