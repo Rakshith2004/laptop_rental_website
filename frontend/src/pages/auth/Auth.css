@@ -88,3 +88,15 @@
   color: #0E3386;
   text-decoration: none;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .authPage-form {
+    width: 100%;
+    padding: 25px;
+  }
+
+  .authPage-container {
+    padding: 16px;
+  }
+}

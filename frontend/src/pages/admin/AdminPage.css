@@ -126,3 +126,43 @@
 .adminContainer button:hover {
     background: #0a2870;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .adminContainer {
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 70px);
+    }
+
+    .adminContainer .sidebar {
+        width: 100%;
+        min-width: unset;
+        height: auto;
+        padding: 12px 16px;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 4px;
+    }
+
+    .adminContainer .admin-logo {
+        display: none;
+    }
+
+    .adminContainer nav {
+        flex-direction: row;
+        gap: 4px;
+        width: 100%;
+    }
+
+    .adminContainer .navItem {
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .adminContainer .contentArea {
+        padding: 16px;
+    }
+}

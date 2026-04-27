@@ -108,6 +108,8 @@
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
+  overflow-x: auto;           /* 🔧 prevent horizontal overflow on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
 .dashboard-table-header {
@@ -120,6 +122,7 @@
 .dashboard-table table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 500px;           /* 🔧 ensures table doesn't squish on mobile */
 }
 
 .dashboard-table th,
@@ -145,6 +148,10 @@
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
@@ -157,5 +164,11 @@
 
   .dashboard-card span {
     font-size: 22px;
+  }
+
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 10px 12px;
+    font-size: 13px;
   }
 }
